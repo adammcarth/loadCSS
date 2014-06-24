@@ -1,28 +1,7 @@
-# loadCSS
+## loadCSS [Remove Old Stylesheet]
 
-A function for loading CSS asynchronously
-[c]2014 @scottjehl, Filament Group, Inc.
-Licensed MIT
+This is a branch of [filamentgroup/loadCSS](https://github.com/filamentgroup/loadCSS) that prevents stylesheets from adding more than once.
 
-## Usage
+The changes I made check each stylesheet's href="" attribute, and if it matches the one specified in the loadCSS() function - it will be removed before it is added again.
 
-Place the [`loadCSS` function](https://github.com/filamentgroup/loadCSS/blob/master/loadCSS.js) inline in the `head` of your page (it can also be included in an external JavaScript file if preferable). 
-
-Then call it by passing it a stylesheet URL:
-
-``` html
-<head>
-...
-<script>
-  loadCSS( href, before, media ){ ... }
-  // load a file
-  loadCSS( "path/to/mystylesheet.css" );  
-</script>
-...
-</head>
-```
-
-#### Optional Arguments
-- By default, your stylesheet will be inserted before the first `script` tag in the DOM (which may be the one shown above). If you need another insert location, use the optional `before` argument to specify a different sibling element. The stylesheet will be inserted before the element you specify.
-
-- You can optionally pass a string to the media argument to set the `media=""` of the stylesheet - the default value is `all`.
+So let's say you have a form that submits though ajax and you want to load a new stylesheet asynchronously if the server hits back with a 200 OK (perhaps some css to format a success message). If the form is submitted twice or more (very feasible in some scenarios) - the stylesheet will be appended to the DOM more than once. Although this shouldn't make a difference to the rendering of the css, appending the same stylesheet to the document more than once seems very wrong.
